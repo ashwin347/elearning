@@ -1,6 +1,6 @@
 <html>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-
+{% load static %}
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -11,35 +11,36 @@
 <!-- Compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <body>
-        
-  <nav>
-    <div class="nav-wrapper">
-      <a href="#" class="brand-logo">Username</a>
-      <ul class="right">
-        <li><a href="collapsible.html"><i class='material-icons '>input</i>Logout</a></li>
-      </ul>
-    </div>
-  </nav>
-        <div class='row' >
-        <div class='col-lg-2' style='top:15px'>
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                  <a class="nav-link active" onclick=loadHtml('profile')>Profile</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" onclick=loadHtml('queries')>Queries</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" onclick=loadHtml('chatrequests')>Chat requests</a>
-                </li>
-              </ul>
+    <body style='background:url("{% static 'faculityHome.jpg' %}")'>
+      <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#">Elearning Website</a>
+          </div>
+          <ul class="nav navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" onclick=loadHtml('profile')>Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" onclick=loadHtml('queries')>Queries</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" onclick=loadHtml('chatrequests')>Chat requests</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" onclick=loadHtml('studentfiles')>Files</a>
+            </li>
+          </ul>
+          <button onclick="window.location.href='logout'" class="btn btn-danger navbar-btn navbar-right" style='right:30px;'>Log Out</button>
         </div>
+      </nav>
+        <div class='row' >
         <div class="col-lg-10" id='rightPane'></div>
-        
   </div>
   
-  
+  <script>
+   
+  </script>
   <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
         <div class="modal-dialog">
       <div class="modal-content">
@@ -73,17 +74,65 @@
         </div>
     </body>
 <script>
-  function loadHtml(option){
-    if (option=='profile'){
-      $("#rightPane").load("studentprofile");
-    }
-    else if (option=='queries'){
-      $("#rightPane").load("studentmaterials");
-    }
-    else if(option == 'chatrequests'){
-      $("#rightPane").load("studentmanagechats");
-    }
-    
-  }
+            $("#rightPane").load('faculitymanagequeries');
 
+  function reject(id){
+        $.post("faculitydeleterequest",{'id':id}, function( data ) {
+            $("#rightPane").load('faculitymanagechats');
+}
+);
+    }
+    function updateprofile(id){
+      name=document.getElementById('name').value; 
+    phone=document.getElementById('phone').value; 
+    email=document.getElementById('email').value; 
+    password=document.getElementById('password').value; 
+    console.log({'name':name,'phone':phone,'email':email,'password':password})
+    $.post("updatestudentprofile",{'name':name,'phone':phone,'email':email,'password':password}, function( data ) {
+            $("#rightPane").load('studentprofile');
+}
+);
+    }
+    function chatrequest(facid,req){
+      if(req=='yes')
+      {$("#rightPane").load("studentnewchatrequest?req=yes&faculityid="+facid);}
+      else{
+        {$("#rightPane").load("studentnewchatrequest?req=no&faculityid="+facid);}
+
+      }
+    }
+    function loadHtml(option){
+      if (option=='profile'){
+        $("#rightPane").load("studentprofile");
+      }
+      else if (option=='queries'){
+        $("#rightPane").load("faculitymanagequeries");
+      }
+      else if(option == 'chatrequests'){
+        $("#rightPane").load("studentmanagechats");
+      } 
+      else if(option=='studentfiles'){
+        $("#rightPane").load("studentviewmaterials");
+
+      }  
+    }
+    function requestfile(fileid){
+       
+      $("#rightPane").load("studentrequestfile?fileid="+fileid);
+    }
+    function searchfile(){
+      q=document.getElementById('search').value;
+      console.log(q)
+      $("#rightPane").load("studentviewmaterials?q="+q);
+    }
+  $(document).ready(loadHtml('studentviewmaterials'));
+    
+              
+    function accept(id){
+        $.post( "faculityacceptrequest",{'id':id}, function( data ) {
+            $("#rightPane").load(data);
+}
+);
+    }
+            
 </script></html>

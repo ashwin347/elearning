@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="assets/style.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </head>
+    <body style='background:url("{% static 'faculityHome.jpg' %}")'>
+        
+        <script>
+            function tabclose(){
+                window.open('','_self').close();
+                console.log('k')
+                window.close()
+            }
+            function submit(){
+                qid='{{query.0}}'
+                reply=document.getElementById('reply').value;
+                if(reply==''){
+                    alert('response empty');
+                    return
+                }
+                $.get('submitqueryreply',{'reply':reply,'qid':qid})
+            }
+        </script>
+    
+        <!-- <div class='b' >
+        <div class='b' id='topic'>when is art fest</div>
+        <div class='b'> whenn will be art fest</div>
+        <div>replied by Sabu sir</div> -->
+    
+    <div style='background-color:white' class="container">
+        <h2 class="text1">Query Topic: {{query.0.1}}</h2><br>
+        <h4 class="text2">Query description: {{query.0.2}}</h4><br>
+{% if request.session.type == 'f' %}
+        <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-8">
+              <input type="password" class="form-control" id="reply" name='reply' placeholder="Type any thing...">
+            </div>
+        </div>
+        {% endif %}
+        {% if query.0.3 == 'replied' %}
+        <h5 class="text3">Replied by {{query.1.2}}</h5>
+
+        <h4 class="text2">{{query.1.1}}</h4><br>
+        {% else %}
+        <h4 class="text2">Not yet replied</h4><br>
+        
+        {% endif %}
+        <div class="btn">
+{% if request.session.type == 'f' %}
+
+            <button type="button" class="btn btn-primary" onclick='submit()'>Submit</button>
+            {% endif %}
+            <button type="button" class="btn btn-primary" onclick='tabclose()'>Close</button>
+        </div>
+        
+
+
+    </div>
+        <!-- <button onclick='submit()'>Submit</button>
+        <button onclick='close()'>Close</button> -->
+    
+    
+    
+    <style>
+        .b{
+            background-color: white;
+        }
+        .container{
+            padding: 50px;
+        }
+        .btn{
+            position: relative;
+            top: 20px;
+            left: 80px;
+        }
+        .text3{
+            position: relative;
+            left: 260px;
+        }
+        
+        
+    </style>
+    </body>
+</html>

@@ -1,35 +1,37 @@
 
-  <div class="row">
+  <div class="row" style='background-color: white  ;'>
     <form class="col-lg-8">
       <div class="row">
         <div class="input-field col s6">
-          <input id="first_name" type="text" class="validate">
-          <label for="first_name">First Name</label>
+          <input id="name" type="text" value='{{profile.1}}' class="validate">  
+          <label for="name">Name</label>
         </div>
-        <div class="input-field col s6">
-          <input id="last_name" type="text" class="validate">
-          <label for="last_name">Last Name</label>
+        
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="phone" type="Number" value='{{profile.4}}' class="validate">
+          <label for="phone">Phone</label>
         </div>
       </div>
       <div class="row">
         <div class="input-field col s12">
-          <input id="disabled" type="text" class="validate">
-          <label for="disabled">Disabled</label>
+          <input id="email" type="email" value='{{profile.2}}' class="validate">
+          <label for="email">Email</label>
         </div>
-      </div>
       <div class="row">
         <div class="input-field col s12">
-          <input id="password" type="password" class="validate">
+          <input id="password" type="password" value='{{profile.3}}' class="validate">
           <label for="password">Password</label>
         </div>
       </div>
-      <div class="row">
-        <div class="input-field col s12">
-          <input id="email" type="email" class="validate">
-          <label for="email">Email</label>
-        </div>
       </div>
     </form>
+    <a onclick='updateprofile({{profile.0}})' class="waves-effect waves-light btn"><i class="material-icons left">cloud</i>update</a>
+
   </div>
-  <a class="waves-effect waves-light btn"><i class="material-icons left">check</i>button</a>
-        
+  <script>
+    document.getElementById('name').focus(); 
+    document.getElementById('phone').focus(); 
+    document.getElementById('email').focus(); 
+    document.getElementById('password').focus(); 
+  </script>

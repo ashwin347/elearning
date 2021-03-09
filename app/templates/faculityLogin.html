@@ -4,30 +4,40 @@
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    
+<style>
+    #box{
+        background: #ff9966;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #ff5e62, #ff9966);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #ff5e62, #ff9966); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
+</style>    
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <body style=background:url("{% static 'loginbackground.jpg' %}") >
-        <img src="{% static 'loginbackground.jpg' %}">
+    <body style=background:url("{% static 'loginbackground.jpg' %}")>
+        <img src=>
         <div class='container-fluid'>
             <div class="row align-items-center">
-                <div class="col-md-6 login-form-1" style='position:absolute;top:20%;left:25%'>
-                    <h3>Login</h3>
+                <div  id='box' class="col-md-6 login-form-1" style='position:absolute;top:20%;left:25%'>
+                    <h3 style='color:white'><b>Faculity Login</b></h3>
                     {% if error == 'True' %}
         <h1>Username and password doesnot match</h1>
         {% endif %}
-                    <form method=POST action=adminloginvalidation >
+                    <form method=POST action=faculityloginvalidation >
                         <div class="form-group">
-                            <input name=username type="text" class="form-control" placeholder="Your Email *" value="" />
+                            <input name=email type="text" class="form-control" placeholder="Your Email *" value="" />
                         </div>
                         <div class="form-group">
                             <input name=password type="password" class="form-control" placeholder="Your Password *" value="" />
                         </div>
                         <div class="form-group">
-                            <input type="submit" class="btnSubmit" value="Login" />
-                        </div>
-                        <div class="form-group">
-                            <a href="#" class="ForgetPwd">Forget Password?</a>
+                            <input type="submit" style='width:100%' class="btnSubmit" value="Login" />
+                            
+                            <input  type="" onclick="welcome()" style='width:100%;margin-top:10px' class="btnSubmit" value="Back" />
+                            <script>
+                                function welcome(){
+                                    window.location.href='welcome'
+                                }
+                            </script>
                         </div>
                     </form>
                 </div>

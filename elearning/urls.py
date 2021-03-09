@@ -20,15 +20,29 @@ from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.renderLogin),
+    path('faculity',views.renderFaculityLogin),
+    path('welcome',views.renderWelcome),
+    path('',views.renderWelcome),
+    path('faculityloginvalidation',views.faculityLoginValidation),
     path('faculityhome',views.renderFaculityHome),
     path('faculitymanagequeries',views.renderFaculityQueries),
+    path('faculitydeletequery',views.faculityDeleteQuery),
     path('faculitymanagechats',views.renderFaculityChats),
+    path('faculityacceptrequest',views.faculityAcceptRequest),
+    path('faculitydeleterequest',views.faculityDeleteRequest),
     path('faculityprofile',views.renderFaculityProfile),
     path('faculityhome',views.renderFaculityHome),
+    path('student',views.renderStudentLogin),
+    path('studentloginvalidation',views.studentLoginValidation),
     path('studenthome',views.renderStudentHome),
-    path('studentmaterials',views.renderStudentMaterials),
+    path('studentviewmaterials',views.renderStudentMaterials),
+    path('studentrequestfile',views.studentRequestFile),
     path('studentprofile',views.renderStudentProfile),
-    path('studenthome',views.renderStudentChats),
-    path('studentmanagechats',views.renderStudentChats)
+    path('updatestudentprofile',views.updateStudentProfile),
+    path('studentmanagechats',views.renderStudentChats),
+    path('displayqueryinfo',views.showQueryInfo),
+    path('submitqueryreply',views.submitQueryReply),
+    path('studentnewchatrequest',views.studentInsertChatRequest),
+    path('logout',views.logout),
+
 ]
