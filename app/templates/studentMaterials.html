@@ -29,15 +29,14 @@
       <tr>
       <td>{{file.1}}</td>
       <td>{{file.2}}</td>
-      {% if file.3 != None %}
-      <td>{{file.3}}</td>
-      {% else %}
+      {% if file.3 == None %}
       <td>Not Requested</td>
-
+      {% else %}
+      <td>{{file.3}}</td>
       {% endif %}
       <td>
       {% if file.3 == None %}
-      <a class="waves-effect waves-light btn" onclick='requestfile({{file.0}})'>request access</a>
+      <a class="waves-effect waves-light btn" onclick='requestfile({{file.0}})'>request access</a>  
       {% elif file.3 == 'accepted' %}
       <a class="waves-effect waves-light btn" onclick='downloadfile({{file.0}})'>Download file</a>
       {% endif %}

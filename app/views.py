@@ -2,7 +2,10 @@ from django.shortcuts import render
 import sys
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
-
+import os
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+from django.conf import settings
 sys.path.append(r'C:\Users\best\Anaconda3\Lib\site-packages')
 import mysql.connector
 # Create your views here.
@@ -194,6 +197,29 @@ def updateStudentProfile(request):
     cursor.execute("UPDATE `students` SET `studentname`='"+name+"',`email`='"+email+"',`password`='"+password+"',`phone`='"+phone+"' WHERE id='"+str(id)+"'")
     connection.commit()
     return render(request,'studentProfile.html')
+def renderFaculityFiles(request):
+    connection=mysql.connector.connect(host='localhost',user='root',password='',database='elearning')
+    cursor=connection.cursor()
+    cursor.execute('SELECT f.*, COUNT(r.fileid) AS "counts" FROM files f LEFT JOIN filerequests r on f.id=r.fileid GROUP BY f.id')
+    files=cursor.fetchall()   
+    return render(request,'faculityManageFiles.html',{'files':files})
+@csrf_exempt
+def faculityUploadFile(request):
+    file=request.FILES['file']
+    path = default_storage.save('tmp/'+file._name, ContentFile(file.read()))
+    connection=mysql.connector.connect(host='localhost',user='root',password='',database='elearning')
+    cursor=connection.cursor()
+    cursor.execute("INSERT INTO `files`(`filename`, `fileinfo`) VALUES ('"+file._name+"',' ')")
+    connection.commit()
+    return HttpResponse('None')
+@csrf_exempt
+def faculityDeleteFile(request):
+    connection=mysql.connector.connect(host='localhost',user='root',password='',database='elearning')
+    cursor=connection.cursor()
+    id=request.POST['id']
+    cursor.execute("delete from files where id='"+id+"'")
+    connection.commit()
+    return HttpResponse('none')
 def studentInsertChatRequest(request):
     id=sessionCheck(request,'s')
     if id=='false':

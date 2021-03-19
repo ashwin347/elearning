@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 09, 2021 at 08:13 PM
+-- Generation Time: Mar 19, 2021 at 04:49 AM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.1.33
 
@@ -42,7 +42,8 @@ CREATE TABLE `chatrequests` (
 INSERT INTO `chatrequests` (`id`, `studentid`, `faculityid`, `status`) VALUES
 (2, 1, 1, 'accepted'),
 (3, 1, 1, 'rejected'),
-(5, 4, 0, 'pending');
+(5, 4, 0, 'pending'),
+(9, 4, 1, 'rejected');
 
 -- --------------------------------------------------------
 
@@ -91,7 +92,9 @@ INSERT INTO `filerequests` (`id`, `fileid`, `studentid`, `status`) VALUES
 (15, 5, 1, 'pending'),
 (16, 5, 4, 'pending'),
 (17, 2, 4, 'pending'),
-(18, 4, 4, 'pending');
+(18, 4, 4, 'pending'),
+(19, 6, 4, 'pending'),
+(20, 8, 4, 'pending');
 
 -- --------------------------------------------------------
 
@@ -110,10 +113,7 @@ CREATE TABLE `files` (
 --
 
 INSERT INTO `files` (`id`, `filename`, `fileinfo`) VALUES
-(1, 'botony', 'botony new notes'),
-(2, 'chemistry', 'chemistry new notes'),
-(4, 'physics', 'physics new notes'),
-(5, 'Math', 'Math new notes');
+(8, 'her code python.txt', ' ');
 
 -- --------------------------------------------------------
 
@@ -210,7 +210,7 @@ ALTER TABLE `students`
 -- AUTO_INCREMENT for table `chatrequests`
 --
 ALTER TABLE `chatrequests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `faculities`
@@ -222,13 +222,13 @@ ALTER TABLE `faculities`
 -- AUTO_INCREMENT for table `filerequests`
 --
 ALTER TABLE `filerequests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `files`
 --
 ALTER TABLE `files`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `queries`

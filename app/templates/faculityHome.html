@@ -27,6 +27,9 @@
             <li class="nav-item">
               <a class="nav-link" onclick=loadHtml('chatrequests')>Chat requests</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" onclick=loadHtml('files')>Files</a>
+            </li>
           </ul>
           <button onclick="window.location.href='logout'" class="btn btn-danger navbar-btn navbar-right" style='right:30px;'>Log Out</button>
         </div>
@@ -86,16 +89,44 @@
       }
       else if(option == 'chatrequests'){
         $("#rightPane").load("faculitymanagechats");
+      }
+      else if(option == 'files'){
+        $("#rightPane").load("faculitymanagefiles");
       }   
     }
   $(document).ready(loadHtml('queries'));
     
-              
+        function deletefile(id){
+          $.post( "faculitydeletefile",{'id':id}, function( data ) {
+            $("#rightPane").load('faculitymanagefiles');
+        });}      
     function accept(id){
-        $.post( "faculityacceptrequest",{'id':id}, function( data ) {
-            $("#rightPane").load(data);
+        $.post("faculityacceptrequest",{'id':id}, function( data ) {
+            $("#rightPane").load('faculitymanagefiles');
 }
 );
+    }
+    function uploadfile(){
+      var fd = new FormData();
+        var files = $('#fileupload')[0].files;
+        
+        // Check file selected or not
+        if(files.length > 0 ){
+           fd.append('file',files[0]);
+
+           $.ajax({
+              url: 'faculityuploadfile',
+              type: 'post',
+              data: fd,
+              contentType: false,
+              processData: false,
+              success: function(response){
+                $("#rightPane").load("faculitymanagefiles");                 
+              },
+           });
+        }else{
+           alert("Please select a file.");
+        }
     }
             
 </script></html>
