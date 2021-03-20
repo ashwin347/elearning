@@ -101,6 +101,17 @@
 
       }
     }
+    function downloadfile(id){
+      $.post( "downloadfile",{'id':id}, function( data ) {
+        var binaryData = [];
+        binaryData.push(data);
+        var a = document.createElement("a");
+
+        a.href = URL.createObjectURL(new Blob(binaryData, {type: "application/zip"}));
+        a.download = data;
+        document.body.appendChild(a);
+        a.click();
+    });}
     function loadHtml(option){
       if (option=='profile'){
         $("#rightPane").load("studentprofile");
@@ -134,5 +145,6 @@
 }
 );
     }
+    
             
 </script></html>

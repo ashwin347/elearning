@@ -1,0 +1,40 @@
+
+<button class="btn btn-danger btn-xs" style='margin-top:2%;margin-bottom:2%' onclick=$("#rightPane").load('faculitymanagefiles');>Back</button>
+<div style='background-color: white;'>
+         
+           
+              <div class="table-responsive">
+  
+                  
+                  <table id="mytable" class="responsive-table centered stripped">
+                       
+                       <thead style='background-color: #26a69a; color: white '>
+                       <th>Student Name</th>
+                           <th>Accept</th>
+                           <th>Reject</th>
+                       </thead>
+        <tbody>
+          {% for request in requests %}
+        
+        <tr>
+        <td>{{request.1}}</td>
+<td>          
+  <p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" onclick=updatefilerequest({{fid}},{{request.0}},'accepted') >Accept</button></p></td>
+  <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" onclick=updatefilerequest({{fid}},{{request.0}},'rejected') >reject</button></p></td>
+</tr>
+        
+        {% endfor %}
+                </tbody>
+            <script>
+              function updatefilerequest(fid,sid,status){
+             $.post( "updatefilerequest",{'fid':fid,'sid':sid,'status':status}, function( data ) 
+             {
+                $("#rightPane").load('showfilerequestlist?id='+fid);});
+              }
+            </script>
+    </table>
+                    
+                </div>
+                
+        </div>
+</div>

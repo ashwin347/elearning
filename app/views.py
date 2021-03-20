@@ -117,6 +117,28 @@ def faculityDeleteRequest(request):
     print('yes')  
     return renderFaculityChats(request)
 @csrf_exempt
+def updateFileRequest(request):
+    fid=request.POST['fid']
+    sid=request.POST['sid']
+    status=request.POST['status']
+    connection=mysql.connector.connect(host='localhost',user='root',password='',database='elearning')
+    cursor=connection.cursor()
+    print("update filerequests set status='"+status+"' where fileid='"+fid+"' and studentid='"+sid+"'")
+    cursor.execute("update filerequests set status='"+status+"' where fileid='"+fid+"' and studentid='"+sid+"'")
+    connection.commit()
+    return showFileRequestList(request)
+def showFileRequestList(request):
+    connection=mysql.connector.connect(host='localhost',user='root',password='',database='elearning')
+    cursor=connection.cursor()
+    try:
+        fid=request.GET['id']
+    except:
+        fid=request.POST['fid']
+    cursor.execute("SELECT f.studentid,s.studentname FROM filerequests f LEFT JOIN students s on s.id=f.studentid WHERE f.status='pending' and f.fileid='"+fid+"'")
+    requests=cursor.fetchall()
+    connection.commit()
+    return render(request,'showFileRequestList.html',{'requests':requests,'fid':fid})
+@csrf_exempt
 def faculityAcceptRequest(request):
     connection=mysql.connector.connect(host='localhost',user='root',password='',database='elearning')
     cursor=connection.cursor()
@@ -125,7 +147,16 @@ def faculityAcceptRequest(request):
     connection.commit()
     return render(request,'faculityChatRequests.html')
 def renderFaculityProfile(request):
-    return render(request,'faculityProfile.html')
+    id=request.session['id']
+    id=str(id)
+    connection=mysql.connector.connect(host='localhost',user='root',password='',database='elearning')
+    cursor=connection.cursor()
+    cursor.execute('select * from faculities where id= "'+id+'"')
+    faculity=cursor.fetchall()
+    connection.commit()
+    faculity=faculity[0]
+    print(faculity)
+    return render(request,'faculityProfile.html',{'faculity':faculity})
 
 def renderStudentLogin(request):
     return render(request,'studentLogin.html')
@@ -197,10 +228,39 @@ def updateStudentProfile(request):
     cursor.execute("UPDATE `students` SET `studentname`='"+name+"',`email`='"+email+"',`password`='"+password+"',`phone`='"+phone+"' WHERE id='"+str(id)+"'")
     connection.commit()
     return render(request,'studentProfile.html')
+@csrf_exempt
+def updateFaculityProfile(request):
+    id=sessionCheck(request,'f')
+    if id=='false':
+        return renderWelcome(request)
+    connection=mysql.connector.connect(host='localhost',user='root',password='',database='elearning')
+    cursor=connection.cursor()
+    name=request.POST['name']
+    phone=request.POST['department']
+    email=request.POST['email']
+    password=request.POST['password']
+    cursor.execute("UPDATE `faculities` SET `faculityname`='"+name+"',`email`='"+email+"',`password`='"+password+"',`department`='"+department+"' WHERE id='"+str(id)+"'")
+    connection.commit()
+    return render(request,'studentProfile.html')
+@csrf_exempt
+def downloadFile(request):
+    connection=mysql.connector.connect(host='localhost',user='root',password='',database='elearning')
+    cursor=connection.cursor()
+    fid=request.POST['id']
+    cursor.execute('select filename from files where id="'+fid+'"')
+    fname=cursor.fetchall()[0][0]
+    try:
+        os.chdir('tmp')
+    except:
+        pass
+    file=open(fname,'rb')
+    response = HttpResponse(file.read(), content_type="application/vnd.ms-excel")
+    response['Content-Disposition'] = 'inline; filename=tmp\\' + fname
+    return response
 def renderFaculityFiles(request):
     connection=mysql.connector.connect(host='localhost',user='root',password='',database='elearning')
     cursor=connection.cursor()
-    cursor.execute('SELECT f.*, COUNT(r.fileid) AS "counts" FROM files f LEFT JOIN filerequests r on f.id=r.fileid GROUP BY f.id')
+    cursor.execute('SELECT f.*, COUNT(r.fileid) AS "counts" FROM files f LEFT JOIN filerequests r on f.id=r.fileid  GROUP BY f.id')
     files=cursor.fetchall()   
     return render(request,'faculityManageFiles.html',{'files':files})
 @csrf_exempt

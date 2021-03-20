@@ -83,6 +83,7 @@
     function loadHtml(option){
       if (option=='profile'){
         $("#rightPane").load("faculityprofile");
+        focus();
       }
       else if (option=='queries'){
         $("#rightPane").load("faculitymanagequeries");
@@ -103,6 +104,26 @@
     function accept(id){
         $.post("faculityacceptrequest",{'id':id}, function( data ) {
             $("#rightPane").load('faculitymanagefiles');
+}
+);
+    }
+    function focus(){
+    document.getElementById('name').focus(); 
+    document.getElementById('department').focus(); 
+    document.getElementById('email').focus(); 
+    document.getElementById('password').focus(); 
+  }
+  function viewfilerequests(id){
+            $("#rightPane").load('showfilerequestlist?id='+id);
+  }
+    function updatefprofile(id){
+      name=document.getElementById('name').value; 
+    department=document.getElementById('department').value; 
+    email=document.getElementById('email').value; 
+    password=document.getElementById('password').value; 
+    console.log({'name':name,'department':department,'email':email,'password':password})
+    $.post("updatefaculityprofile",{'name':name,'department':department,'email':email,'password':password}, function( data ) {
+            $("#rightPane").load('studentprofile');
 }
 );
     }

@@ -40,24 +40,26 @@
     <div style='background-color:white' class="container">
         <h2 class="text1">Query Topic: {{query.0.1}}</h2><br>
         <h4 class="text2">Query description: {{query.0.2}}</h4><br>
+        {% if query.0.3 == 'replied' %}
+        <h4 class="text2">Status : Replied</h4><br>
+        <h4 class="text2">Reply : {{query.1.1}}</h4><br>
+        <h5 class="text2">Replied by {{query.1.2}}</h5>
+        {% else %}
+        <h4 class="text2">Not yet replied</h4><br>
+        {% endif %}
+        {% if query.0.3 != 'replied' %}     
 {% if request.session.type == 'f' %}
+
         <div class="form-group row">
             <label for="inputPassword" class="col-sm-2 col-form-label"></label>
             <div class="col-sm-8">
-              <input type="password" class="form-control" id="reply" name='reply' placeholder="Type any thing...">
+              <input type="text" class="form-control" id="reply" name='reply' placeholder="Type Reply Here">
             </div>
         </div>
         {% endif %}
-        {% if query.0.3 == 'replied' %}
-        <h5 class="text3">Replied by {{query.1.2}}</h5>
-
-        <h4 class="text2">{{query.1.1}}</h4><br>
-        {% else %}
-        <h4 class="text2">Not yet replied</h4><br>
-        
-        {% endif %}
+    {% endif %}
         <div class="btn">
-{% if request.session.type == 'f' %}
+{% if request.session.type == 'f' and query.0.3 != 'replied' %}
 
             <button type="button" class="btn btn-primary" onclick='submit()'>Submit</button>
             {% endif %}
