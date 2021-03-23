@@ -9,12 +9,25 @@ from django.conf import settings
 sys.path.append(r'C:\Users\best\Anaconda3\Lib\site-packages')
 import mysql.connector
 # Create your views here.
+@csrf_exempt
+def newStudent(request):
+    connection=mysql.connector.connect(host='localhost',user='root',password='',database='elearning')
+    cursor=connection.cursor()
+    name=request.POST['name']
+    phone=request.POST['phone']
+    email=request.POST['email']
+    password=request.POST['password']
+    cursor.execute("INSERT INTO `students`(`studentname`, `email`, `password`, `phone`) VALUES ('"+name+"','"+email+"','"+password+"','"+phone+"')")
+    connection.commit()
+    return renderStudentLogin(request,signup=True)
 def sessionCheck(request,sesType):
     if request.session['type'] == sesType:
         return request.session['id'] 
     else:
         return 'false'
-def renderFaculityLogin(request):
+def renderFaculityLogin(request,signup=False):
+    if signup==True:
+        return render(request,'faculityLogin.html',{'signup':'True'})
     return render(request,'faculityLogin.html')
 def renderWelcome(request):
     if 'id' in request.session:
@@ -158,7 +171,10 @@ def renderFaculityProfile(request):
     print(faculity)
     return render(request,'faculityProfile.html',{'faculity':faculity})
 
-def renderStudentLogin(request):
+def renderStudentLogin(request,signup=False):
+    if signup==True:
+        return render(request,'studentLogin.html',{'signup':'True'})
+
     return render(request,'studentLogin.html')
 
 @csrf_exempt
@@ -242,6 +258,17 @@ def updateFaculityProfile(request):
     cursor.execute("UPDATE `faculities` SET `faculityname`='"+name+"',`email`='"+email+"',`password`='"+password+"',`department`='"+department+"' WHERE id='"+str(id)+"'")
     connection.commit()
     return render(request,'studentProfile.html')
+@csrf_exempt
+def newFaculity(request):
+    connection=mysql.connector.connect(host='localhost',user='root',password='',database='elearning')
+    cursor=connection.cursor()
+    name=request.POST['name']
+    department=request.POST['department']
+    email=request.POST['email']
+    password=request.POST['password']
+    cursor.execute("INSERT INTO `faculities`( `faculityname`, `department`, `email`, `password`) VALUES ('"+name+"','"+department+"','"+email+"','"+password+"')")
+    connection.commit()
+    return renderFaculityLogin(request,signup=True)
 @csrf_exempt
 def downloadFile(request):
     connection=mysql.connector.connect(host='localhost',user='root',password='',database='elearning')

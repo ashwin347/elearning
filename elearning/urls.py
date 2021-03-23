@@ -19,6 +19,8 @@ from app import views
 from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
+    path('newfaculitysignup',views.newFaculity),
+    path('newstudent',views.newStudent),
     path('admin/', admin.site.urls),
     path('faculity',views.renderFaculityLogin),
     path('welcome',views.renderWelcome),

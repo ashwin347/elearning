@@ -5,7 +5,7 @@
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
-    #box{
+    #box,#signbox{
         background: #ff9966;  /* fallback for old browsers */
         background: -webkit-linear-gradient(to right, #ff5e62, #ff9966);  /* Chrome 10-25, Safari 5.1-6 */
         background: linear-gradient(to right, #ff5e62, #ff9966); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
@@ -22,6 +22,9 @@
                     {% if error == 'True' %}
         <h1>Username and password doesnot match</h1>
         {% endif %}
+        {% if signup == 'True' %}
+        <h1>Signup successfull</h1>
+        {% endif %}
                     <form method=POST action=studentloginvalidation >
                         <div class="form-group">
                             <input name=email type="text" class="form-control" placeholder="Your Email *" value="" />
@@ -33,9 +36,44 @@
                             <input type="submit" style='width:100%' class="btnSubmit" value="Login" />
                             
                             <input  type="" onclick="welcome()" style='width:100%;margin-top:10px' class="btnSubmit" value="back" />
+                            <input  type="" onclick="showsignup()" style='width:100%;margin-top:10px' class="btnSubmit" value="Create new account" />
                             <script>
                                 function welcome(){
                                     window.location.href='welcome'
+                                }
+                            </script>
+                        </div>
+                    </form>
+                </div>
+                <div  id='signbox' class="col-md-6 login-form-1" style='position:absolute;top:20%;left:25%;display:none'>
+                    <h3 style='color:white'><b>New Student Registration</b></h3>
+                    
+                    <form method=POST action=newstudent >
+                        <div class="form-group">
+                            <input name=name type="text" class="form-control" placeholder="Your name *" value="" />
+                        </div><div class="form-group">
+                            <input name=phone type="number" class="form-control" placeholder="Your phone *" value="" />
+                        </div>
+                        <div class="form-group">
+                            <input name=email type="email" class="form-control" placeholder="Your Email *" value="" />
+                        </div>
+                        <div class="form-group">
+                            <input name=password type="password" class="form-control" placeholder="Your Password *" value="" />
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" style='width:100%' class="btnSubmit" value="Login" />
+                            
+                            <input  type="" onclick="welcome()" style='width:100%;margin-top:10px' class="btnSubmit" value="back" />
+                            <input  type="" onclick="showlogin()" style='width:100%;margin-top:10px' class="btnSubmit" value="already have an account" />
+                            <script>
+                                function showlogin(){
+                                    document.getElementById('signbox').style.display='None';
+                                    document.getElementById('box').style.display='block';
+                                    
+                                }
+                                function showsignup(){
+                                    document.getElementById('signbox').style.display='block';
+                                    document.getElementById('box').style.display='None';
                                 }
                             </script>
                         </div>
