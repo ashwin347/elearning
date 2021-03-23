@@ -41,6 +41,37 @@
                         </div>
                     </form>
                 </div>
+                <div  id='signbox' class="col-md-6 login-form-1" style='position:absolute;top:20%;left:25%;display:none'>
+                    <h3 style='color:white'><b>new Faculity Signup</b></h3>
+                    <form method=POST action=faculityloginvalidation >
+                        <div class="form-group">
+                            <input name=email type="text" class="form-control" placeholder="Your Email *" value="" />
+                        </div>
+                        <div class="form-group">
+                            <input name=password type="password" class="form-control" placeholder="Your Password *" value="" />
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" style='width:100%' class="btnSubmit" value="Login" />
+                            
+                            <input  type="" onclick="welcome()" style='width:100%;margin-top:10px' class="btnSubmit" value="Back" />
+                            <input  type="" onclick="showlogin()" style='width:100%;margin-top:10px' class="btnSubmit" value="Back" />
+                            <script>
+                                function welcome(){
+                                    window.location.href='welcome'
+                                }
+                                function showlogin(){
+                                    document.getElementById('signbox').style.display='None';
+                                    document.getElementById('box').style.display='block';
+                                    
+                                }
+                                function showsignup(){
+                                    document.getElementById('signbox').style.display='block';
+                                    document.getElementById('box').style.display='None';
+                                }
+                            </script>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
             

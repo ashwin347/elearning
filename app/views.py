@@ -236,7 +236,7 @@ def updateFaculityProfile(request):
     connection=mysql.connector.connect(host='localhost',user='root',password='',database='elearning')
     cursor=connection.cursor()
     name=request.POST['name']
-    phone=request.POST['department']
+    department=request.POST['department']
     email=request.POST['email']
     password=request.POST['password']
     cursor.execute("UPDATE `faculities` SET `faculityname`='"+name+"',`email`='"+email+"',`password`='"+password+"',`department`='"+department+"' WHERE id='"+str(id)+"'")
