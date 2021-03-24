@@ -10,6 +10,17 @@ sys.path.append(r'C:\Users\best\Anaconda3\Lib\site-packages')
 import mysql.connector
 # Create your views here.
 @csrf_exempt
+def newQuery(request):
+    connection=mysql.connector.connect(host='localhost',user='root',password='',database='elearning')
+    cursor=connection.cursor()
+    id=sessionCheck(request,'s')
+    id=str(id)
+    title=request.POST['title']
+    description=request.POST['description']
+    cursor.execute("INSERT INTO `queries`(`studentid`, `querytopic`, `querydescription`, `status`)  VALUES ('"+id+"','"+title+"','"+description+"','pending')")
+    connection.commit()
+    return HttpResponse('success')
+@csrf_exempt
 def newStudent(request):
     connection=mysql.connector.connect(host='localhost',user='root',password='',database='elearning')
     cursor=connection.cursor()
@@ -56,6 +67,7 @@ def renderFaculityQueries(request):
         cursor.execute('SELECT q.id,s.studentname , q.querytopic, q.status FROM queries q join students s on q.studentid=s.id')
     else:
         file='studentManageQueries.html'
+        print("SELECT q.id , q.querytopic, q.status FROM queries q join students s on q.studentid=s.id where s.id='"+id+"'")
         cursor.execute("SELECT q.id , q.querytopic, q.status FROM queries q join students s on q.studentid=s.id where s.id='"+id+"'")
     queries=cursor.fetchall()
     return render(request,file,{'queries':queries})
@@ -88,7 +100,7 @@ def showQueryInfo(request):
     if query[0][3]=='replied':
         cursor.execute('select q.repliedfaculityid,q.reply,f.faculityname FROM queries q join faculities f on q.repliedfaculityid=f.id where q.id= "'+qid+'"')
         extra=cursor.fetchall()
-    query=query+extra
+        query=query+extra
     return render(request,'displaySingleQuery.html',{'query':query})
 @csrf_exempt
 def submitQueryReply(request):
@@ -99,7 +111,9 @@ def submitQueryReply(request):
     qid=request.GET['qid']
     if id=='false':
         return HttpRespone('none')
+    
     cursor.execute("UPDATE queries SET status='replied',repliedfaculityid='"+str(id)+"',reply='"+reply+"' WHERE id = '"+str(qid)+"'")
+    connection.commit()
     return HttpResponse('success')
 @csrf_exempt
 def faculityDeleteQuery(request):
@@ -117,7 +131,7 @@ def renderFaculityChats(request):
         return renderWelcome(request)
     connection=mysql.connector.connect(host='localhost',user='root',password='',database='elearning')
     cursor=connection.cursor()
-    cursor.execute("SELECT c.id,s.studentname FROM chatrequests c JOIN faculities f on c.faculityid="+str(id)+" JOIN students s on s.id=c.studentid WHERE f.id=1 AND c.status='pending'")
+    cursor.execute("SELECT c.id,s.studentname,c.status,c.chatlink FROM chatrequests c JOIN faculities f on c.faculityid="+str(id)+" JOIN students s on s.id=c.studentid WHERE f.id=1")
     requests=cursor.fetchall()
     return render(request,'faculityChatRequests.html',{'requests':requests})
 @csrf_exempt
@@ -156,7 +170,8 @@ def faculityAcceptRequest(request):
     connection=mysql.connector.connect(host='localhost',user='root',password='',database='elearning')
     cursor=connection.cursor()
     id=request.POST['id']
-    cursor.execute('Update `chatrequests` set status="accepted" where id= "'+id+'"')
+    chatlink='www.google.com'
+    cursor.execute('Update `chatrequests` set status="accepted",chatlink="'+chatlink+'" where id= "'+id+'"')
     connection.commit()
     return render(request,'faculityChatRequests.html')
 def renderFaculityProfile(request):
@@ -281,15 +296,28 @@ def downloadFile(request):
     except:
         pass
     file=open(fname,'rb')
-    response = HttpResponse(file.read(), content_type="application/vnd.ms-excel")
-    response['Content-Disposition'] = 'inline; filename=tmp\\' + fname
+    response = HttpResponse(file.read(), content_type="application/pdf")
+    response['Content-Disposition'] = 'attachment; filename=tmp\\' + fname
     return response
 def renderFaculityFiles(request):
     connection=mysql.connector.connect(host='localhost',user='root',password='',database='elearning')
     cursor=connection.cursor()
-    cursor.execute('SELECT f.*, COUNT(r.fileid) AS "counts" FROM files f LEFT JOIN filerequests r on f.id=r.fileid  GROUP BY f.id')
-    files=cursor.fetchall()   
-    return render(request,'faculityManageFiles.html',{'files':files})
+    cursor.execute('select * from files')
+    files=cursor.fetchall()
+    values=[]
+    for file in files:
+        id=file[0]
+        id=str(id)
+        cursor.execute('SELECT COUNT(r.fileid) AS "counts" FROM files f LEFT JOIN filerequests r on f.id=r.fileid WHERE r.status="pending" and f.id="'+id+'" GROUP BY f.id')
+        data=cursor.fetchall()
+        file=list(file)
+        if len(data)!=0:
+            d=data[0][0]
+            file.append(d)
+        else:
+            file.append(0)
+        values.append(file)
+    return render(request,'faculityManageFiles.html',{'files':values})
 @csrf_exempt
 def faculityUploadFile(request):
     file=request.FILES['file']
@@ -331,6 +359,6 @@ def renderStudentChats(request):
         return renderWelcome(request)
     connection=mysql.connector.connect(host='localhost',user='root',password='',database='elearning')
     cursor=connection.cursor()
-    cursor.execute("SELECT f.id,f.faculityname,c.status FROM faculities f LEFT JOIN chatrequests c ON f.id = c.faculityid AND c.studentid = '"+str(id)+"'")
+    cursor.execute("SELECT f.id,f.faculityname,c.status,c.chatlink FROM faculities f LEFT JOIN chatrequests c ON f.id = c.faculityid AND c.studentid = '"+str(id)+"'")
     faculities=cursor.fetchall()   
     return render(request,'studentChatRequests.html',{'faculities':faculities})

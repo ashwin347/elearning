@@ -103,14 +103,16 @@
     }
     function downloadfile(id){
       $.post( "downloadfile",{'id':id}, function( data ) {
-        var binaryData = [];
-        binaryData.push(data);
-        var a = document.createElement("a");
+        var element = document.createElement('a');
+          element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(data));
+          element.setAttribute('download', 'my-file-name');
 
-        a.href = URL.createObjectURL(new Blob(binaryData, {type: "application/zip"}));
-        a.download = data;
-        document.body.appendChild(a);
-        a.click();
+          element.style.display = 'none';
+          document.body.appendChild(element);
+
+          element.click();
+
+          document.body.removeChild(element);
     });}
     function loadHtml(option){
       if (option=='profile'){

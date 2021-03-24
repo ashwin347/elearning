@@ -6,6 +6,7 @@
                        <th>faculity name</th>
                           <th>Status</th>
                            <th>Action</th>
+                           <th>Chat link</th>
                        </thead>
         <tbody>
         {% for faculity in faculities %}
@@ -24,10 +25,11 @@
         </td>
         {% elif faculity.2 == 'accepted' %}
         <td>accepted</td>
-
+        <td></td>
         {% elif faculity.2 == 'pending' %}
         <td>pending</td>
         {% endif %}
+        <td>{{faculity.3}}</td>
             </tr>
             {% endfor %}
         </tbody>

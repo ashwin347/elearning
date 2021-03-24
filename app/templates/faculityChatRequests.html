@@ -3,16 +3,27 @@
                   <table id="mytable" class="responsive-table centered stripped">
                        <thead style='background-color: #26a69a; color: white '>
                        <th>Student Name</th>
-                          <th>Edit</th>
-                           <th>Delete</th>
+                       <th>
+                           Status
+                       </th>
+                       <th>Accept</th>
+                           <th>Reject</th>
+                           <th>Chat link</th>
                        </thead>
         <tbody>
         {% for request in requests %}
         <tr>
         <td>{{request.1}}</td>
-        <td>
-          <a class="waves-effect waves-light btn" onclick=accept("{{request.0}}")>Accept</a></td><td>
-              <a class="waves-effect waves-light btn" onclick=reject("{{request.0}}")>Reject</a></td>
+        <td>{{request.2}}</td>
+        {% if request.2 == 'pending' %}
+        <td><a class="waves-effect waves-light btn" onclick=accept("{{request.0}}")>Accept</a></td>
+          <td><a class="waves-effect waves-light btn" onclick=reject("{{request.0}}")>Reject</a></td>
+          <td></td>
+          {% elif request.2 == 'accepted' %}
+          <td></td>
+          <td></td>
+          <td>{{request.3}}</td>
+          {% endif %}
             </tr>
             {% endfor %}
         </tbody>

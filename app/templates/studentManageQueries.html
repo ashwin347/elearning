@@ -1,3 +1,4 @@
+<p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs"  data-toggle="modal" data-target="#newquery" >New Query</button></p>
 <div style='background-color: white;'>
          
            
@@ -18,7 +19,7 @@
         <tr>
         <td>{{query.1}}</td>
         
-        {% if query.2 == None %}
+        {% if query.2 == 'pending' %}
         <td>
           <a class="waves-effect waves-light btn" onclick=showquery({{query.0}})>Not replied</a></td>
         <td>
@@ -42,9 +43,41 @@
               }
             </script>
     </table>
-    
-                    
-                </div>
-                
+                </div>    
         </div>
 </div>
+<div id="newquery" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <div class="form-group">
+          <label for="newtitle">Query Title</label>
+          <input type="text" class="form-control" id="newtitle">
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="newdescription">description:</label>
+          <textarea class="form-control" rows="5" id="newdescription"></textarea>
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" onclick=newquery()>Submit</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script>
+  function newquery(){
+    title=document.getElementById('newtitle').value
+    description=document.getElementById('newdescription').value
+    $.post('newquery',{'title':title,'description':description},function(){
+      $('#rightpane').load('studentmanagequeries');
+    })
+  }
+</script>

@@ -22,13 +22,14 @@
                 window.close()
             }
             function submit(){
-                qid='{{query.0}}'
+                qid='{{query.0.0}}'
                 reply=document.getElementById('reply').value;
                 if(reply==''){
                     alert('response empty');
                     return
                 }
                 $.get('submitqueryreply',{'reply':reply,'qid':qid})
+               location.reload()
             }
         </script>
     
