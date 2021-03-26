@@ -121,7 +121,10 @@
     department=document.getElementById('department').value; 
     email=document.getElementById('email').value; 
     password=document.getElementById('password').value; 
-    console.log({'name':name,'department':department,'email':email,'password':password})
+    if(name == '' || department == '' || email=='' || password=='' ){
+            alert('values cannot be empty');
+            return;
+          }
     $.post("updatefaculityprofile",{'name':name,'department':department,'email':email,'password':password}, function( data ) {
             $("#rightPane").load('faculityprofile');
 }

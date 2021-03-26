@@ -88,6 +88,10 @@
     email=document.getElementById('email').value; 
     password=document.getElementById('password').value; 
     console.log({'name':name,'phone':phone,'email':email,'password':password})
+    if(name == '' || phone == '' || email=='' || password=='' ){
+            alert('values cannot be empty');
+            return;
+          }
     $.post("updatestudentprofile",{'name':name,'phone':phone,'email':email,'password':password}, function( data ) {
             $("#rightPane").load('studentprofile');
 }

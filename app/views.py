@@ -3,6 +3,7 @@ import sys
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 import os
+import random
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.conf import settings
@@ -170,7 +171,11 @@ def faculityAcceptRequest(request):
     connection=mysql.connector.connect(host='localhost',user='root',password='',database='elearning')
     cursor=connection.cursor()
     id=request.POST['id']
-    chatlink='www.google.com'
+    chatlink='https://gotalk.to/'
+    for i in range(10):
+        asci=random.randint(97,122)
+        eng=chr(asci)
+        chatlink=chatlink+eng
     cursor.execute('Update `chatrequests` set status="accepted",chatlink="'+chatlink+'" where id= "'+id+'"')
     connection.commit()
     return render(request,'faculityChatRequests.html')

@@ -22,7 +22,7 @@
           {% elif request.2 == 'accepted' %}
           <td></td>
           <td></td>
-          <td>{{request.3}}</td>
+          <td><a {% if request.3 != None %} href={{request.3}} {% endif %}>{{request.3}}</a></td>
           {% endif %}
             </tr>
             {% endfor %}

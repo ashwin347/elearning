@@ -29,7 +29,7 @@
         {% elif faculity.2 == 'pending' %}
         <td>pending</td>
         {% endif %}
-        <td>{{faculity.3}}</td>
+        <td><a {% if faculity.3 != None %} href={{faculity.3}} {% endif %}>{{faculity.3}}</a></td>
             </tr>
             {% endfor %}
         </tbody>

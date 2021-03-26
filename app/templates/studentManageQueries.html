@@ -76,6 +76,10 @@
   function newquery(){
     title=document.getElementById('newtitle').value
     description=document.getElementById('newdescription').value
+    if(title == '' || description == '' ){
+            alert('values cannot be empty');
+            return;
+          }
     $.post('newquery',{'title':title,'description':description},function(){
       $('#rightpane').load('studentmanagequeries');
     })
